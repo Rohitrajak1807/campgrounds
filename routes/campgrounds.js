@@ -78,4 +78,15 @@ router.put('/:id', async (req, res) => {
     }
 })
 
+router.delete('/:id', async (req, res) => {
+    try {
+        await Campground.findOneAndDelete({_id: req.params.id})
+    } catch (e) {
+        console.log(e)
+
+    } finally {
+        res.redirect('/campgrounds')
+    }
+})
+
 module.exports = router

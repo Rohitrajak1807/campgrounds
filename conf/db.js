@@ -5,7 +5,7 @@ module.exports = () => {
     mongoose.connect(DB_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useFindAndModify: true,
+        useFindAndModify: false,
         useCreateIndex: true
     }).then(() => console.log(`connected to DB on ${DB_URI}`))
         .catch(err => {
