@@ -20,10 +20,15 @@ router.get('/', async (req, res) => {
 router.post('/', isLoggedIn, async (req, res) => {
     try {
         const {name, image, description} = req.body
+        const {username, _id} = req.user
         const newCampground = await Campground.create({
             name: name,
             image: image,
-            description: description
+            description: description,
+            author: {
+                id: _id,
+                username: username
+            }
         })
         console.log(newCampground._id)
         res.redirect('/campgrounds')
