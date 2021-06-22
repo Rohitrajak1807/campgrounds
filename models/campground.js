@@ -20,7 +20,7 @@ const campgroundSchema = new mongoose.Schema({
     ]
 })
 
-campgroundSchema.pre('findOneAndDelete', {query: true}, async function () {
+campgroundSchema.pre('deleteOne', {query: true}, async function () {
     try {
         const id = this.getQuery()._id
         const doc = await this.model.findById(id, {

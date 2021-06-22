@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 require('../models/comment')
 const Campground = require('../models/campground')
-const {isLoggedIn} = require('../utils/middleware')
+const {isLoggedIn, assertAuthorization} = require('../utils/middleware')
 
 router.get('/', async (req, res) => {
     try {
@@ -54,22 +54,15 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.get('/:id/edit', async (req, res) => {
-    try {
-        const campground = await Campground.findById(req.params.id)
+router.get('/:id/edit', isLoggedIn, assertAuthorization, async (req, res) => {
         res.render('campgrounds/edit', {
-            campground: campground
+            campground: res.locals.campground
         })
-    } catch (e) {
-        console.log(e)
-        res.redirect('/')
-    }
-
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', isLoggedIn, assertAuthorization,async (req, res) => {
     try {
-        const campground = await Campground.findByIdAndUpdate(req.params.id, req.body.campground)
+        const campground = await res.locals.campground.updateOne(req.body.campground)
         console.log(campground)
         res.redirect(`/campgrounds/${req.params.id}`)
     } catch (e) {
@@ -78,9 +71,9 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', isLoggedIn, assertAuthorization,async (req, res) => {
     try {
-        await Campground.findOneAndDelete({_id: req.params.id})
+        await res.locals.campground.deleteOne()
     } catch (e) {
         console.log(e)
 
