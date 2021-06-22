@@ -11,6 +11,7 @@ const bootstrapPath = path.join(__dirname, '../node_modules/bootstrap3/dist')
 const commentRoutes = require('../routes/comments')
 const campgroundRoutes = require('../routes/campgrounds')
 const indexRoutes = require('../routes/index')
+const methodOverride = require('method-override')
 
 const app = express()
 app.set('view engine', 'ejs')
@@ -18,6 +19,7 @@ app.use('/css', express.static(path.join(bootstrapPath, 'css')))
 app.use('/js', express.static(path.join(bootstrapPath, 'js')))
 app.use('/fonts', express.static(path.join(bootstrapPath, 'fonts')))
 app.use(express.static(`../public`))
+app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({
     extended: true
 }))

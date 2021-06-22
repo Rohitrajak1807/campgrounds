@@ -54,4 +54,28 @@ router.get('/:id', async (req, res) => {
     }
 })
 
+router.get('/:id/edit', async (req, res) => {
+    try {
+        const campground = await Campground.findById(req.params.id)
+        res.render('campgrounds/edit', {
+            campground: campground
+        })
+    } catch (e) {
+        console.log(e)
+        res.redirect('/')
+    }
+
+})
+
+router.put('/:id', async (req, res) => {
+    try {
+        const campground = await Campground.findByIdAndUpdate(req.params.id, req.body.campground)
+        console.log(campground)
+        res.redirect(`/campgrounds/${req.params.id}`)
+    } catch (e) {
+        console.log(e)
+        res.redirect('/campgrounds')
+    }
+})
+
 module.exports = router
