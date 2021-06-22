@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 require('../models/comment')
 const Campground = require('../models/campground')
+const {isLoggedIn} = require('../utils/middleware')
 
 router.get('/', async (req, res) => {
     try {
@@ -16,7 +17,7 @@ router.get('/', async (req, res) => {
 
 })
 
-router.post('/', async (req, res) => {
+router.post('/', isLoggedIn, async (req, res) => {
     try {
         const {name, image, description} = req.body
         const newCampground = await Campground.create({
@@ -31,7 +32,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('campgrounds/new')
 })
 
