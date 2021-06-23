@@ -3,48 +3,54 @@ const router = require('express').Router({
 })
 const Comment = require('../models/comment')
 const Campground = require('../models/campground')
-const {isLoggedIn, assertCommentOwner} = require('../utils/middleware')
+const {redirectIfNotLoggedIn, assertCommentOwner, assertCampgroundExists} = require('../utils/middleware')
 
-router.get('/:commentId/edit', isLoggedIn, assertCommentOwner, async (req, res) => {
+router.get('/:commentId/edit', redirectIfNotLoggedIn, assertCampgroundExists, assertCommentOwner, async (req, res) => {
     res.render('comments/edit', {
         campgroundId: req.params.id,
         comment: res.locals.comment
     })
 })
 
-router.delete('/:commentId', isLoggedIn, assertCommentOwner, async (req, res) => {
+router.delete('/:commentId', redirectIfNotLoggedIn, assertCampgroundExists, assertCommentOwner, async (req, res) => {
     try {
         await res.locals.comment.deleteOne()
+        req.flash('success', 'Comment deleted')
         res.redirect(`/campgrounds/${req.params.id}`)
     } catch (e) {
         console.log(e)
+        req.flash('error', 'Something went wrong')
         res.redirect('back')
     }
 })
 
-router.put('/:commentId', isLoggedIn, assertCommentOwner, async (req, res) => {
+router.put('/:commentId', redirectIfNotLoggedIn, assertCampgroundExists, assertCommentOwner, async (req, res) => {
     try {
         await res.locals.comment.updateOne(req.body.comment)
+        req.flash('success', 'Comment Updated')
         res.redirect(`/campgrounds/${req.params.id}`)
     } catch (e) {
         console.log(e)
+        req.flash('error', 'Something went wrong')
         res.redirect('back')
     }
 })
 
-router.get('/new', isLoggedIn, async (req, res) => {
+router.get('/new', redirectIfNotLoggedIn, assertCampgroundExists, async (req, res) => {
     try {
         const campground = await Campground.findById(req.params.id)
+        req.flash('success', 'Comment removed')
         res.render('comments/new', {
             campground: campground
         })
     } catch (e) {
         console.log(e)
+        req.flash('error', 'Something went wrong')
         res.redirect(`/campgrounds/${req.params.id}`)
     }
 })
 
-router.post('/', isLoggedIn, async (req, res) => {
+router.post('/', redirectIfNotLoggedIn, assertCampgroundExists, async (req, res) => {
     try {
         const campground = await Campground.findById(req.params.id)
         const {_id, username} = req.user
@@ -57,11 +63,12 @@ router.post('/', isLoggedIn, async (req, res) => {
         })
         campground.comments.push(comment)
         await campground.save()
+        req.flash('success', 'Comment added')
         res.redirect(`/campgrounds/${req.params.id}`)
     } catch (e) {
         console.log(e)
-        // well we'll work on an error page
-        res.status(500).redirect('/campgrounds')
+        req.flash('error', 'Something went wrong')
+        res.redirect('back')
     }
 })
 

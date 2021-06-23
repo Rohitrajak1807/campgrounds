@@ -1,6 +1,7 @@
 const passport = require('passport')
 const router = require('express').Router()
 const {registerUser} = require('../utils/auth')
+const {redirectIfLoggedIn, redirectIfNotLoggedIn} = require('../utils/middleware')
 
 router.get('/register', (req, res) => {
     res.render('register')
@@ -12,11 +13,12 @@ router.post('/register', async (req, res) => {
         res.redirect('/campgrounds')
     } catch (e) {
         console.log(e)
-        res.render('register')
+        req.flash('error', e.message)
+        res.redirect('back')
     }
 })
 
-router.get('/login', (req, res) => {
+router.get('/login', redirectIfLoggedIn, (req, res) => {
     res.render('login')
 })
 
@@ -25,8 +27,9 @@ router.post('/login', passport.authenticate('local', {
     failureRedirect: '/login',
 }))
 
-router.get('/logout', (req, res) => {
+router.get('/logout', redirectIfNotLoggedIn, (req, res) => {
     req.logout()
+    req.flash('success', 'Logged you out')
     res.redirect('/campgrounds')
 })
 
