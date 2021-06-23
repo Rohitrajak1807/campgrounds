@@ -4,7 +4,9 @@ const {registerUser} = require('../utils/auth')
 const {redirectIfLoggedIn, redirectIfNotLoggedIn} = require('../utils/middleware')
 
 router.get('/register', (req, res) => {
-    res.render('register')
+    res.render('register', {
+        page: 'register'
+    })
 })
 
 router.post('/register', async (req, res) => {
@@ -19,7 +21,9 @@ router.post('/register', async (req, res) => {
 })
 
 router.get('/login', redirectIfLoggedIn, (req, res) => {
-    res.render('login')
+    res.render('login', {
+        page: 'login'
+    })
 })
 
 router.post('/login', passport.authenticate('local', {

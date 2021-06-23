@@ -14,13 +14,16 @@ const flash = require('connect-flash')
 
 const path = require('path')
 const bootstrapPath = path.join(__dirname, '../node_modules/bootstrap3/dist')
+const jQueryPath = path.join(__dirname, '../node_modules/jquery/dist')
 const publicDir = path.join(__dirname, '../public')
 
 const app = express()
 app.set('view engine', 'ejs')
-app.use('/css', express.static(path.join(bootstrapPath, 'css')))
-app.use('/js', express.static(path.join(bootstrapPath, 'js')))
-app.use('/fonts', express.static(path.join(bootstrapPath, 'fonts')))
+app.use('/css/bootstrap', express.static(path.join(bootstrapPath, 'css')))
+app.use('/js/bootstrap', express.static(path.join(bootstrapPath, 'js')))
+app.use('/js/jquery', express.static(jQueryPath))
+app.use('/fonts/bootstrap', express.static(path.join(bootstrapPath, 'fonts')))
+
 app.use(express.static(publicDir))
 app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({

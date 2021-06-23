@@ -8,7 +8,8 @@ router.get('/', async (req, res) => {
     try {
         const campgrounds = await Campground.find({})
         res.render('campgrounds/index', {
-            campgrounds: campgrounds
+            campgrounds: campgrounds,
+            page: 'campgrounds'
         })
     } catch (e) {
         console.log(e)
