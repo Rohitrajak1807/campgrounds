@@ -20,11 +20,12 @@ router.get('/', async (req, res) => {
 
 router.post('/', redirectIfNotLoggedIn, async (req, res) => {
     try {
-        const {name, image, description} = req.body
+        const {name, image, description, cost} = req.body
         const {username, _id} = req.user
         const newCampground = await Campground.create({
             name: name,
             image: image,
+            cost: cost,
             description: description,
             author: {
                 id: _id,

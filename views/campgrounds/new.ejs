@@ -14,9 +14,13 @@
                 <label for="image">Image URL</label>
             </div>
             <div class="form-floating">
-                <input id="description" type="text" class="form-control form-bottom-element" name="description" placeholder="Description"
+                <input id="description" type="text" class="form-control form-mid-element" name="description" placeholder="Description"
                        required>
                 <label for="description">Description</label>
+            </div>
+            <div class="form-floating">
+                <input id="cost" type="number" class="form-control form-bottom-element" name="cost" placeholder="Cost" step="0.01" min="0" required>
+                <label for="cost">Cost(in Rs.)/night</label>
             </div>
             <button class="w-50 btn btn-lg btn-primary mb-5" type="submit">Submit</button>
         </form>

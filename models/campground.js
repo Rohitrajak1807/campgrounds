@@ -5,6 +5,10 @@ const campgroundSchema = new mongoose.Schema({
     name: String,
     image: String,
     description: String,
+    cost: {
+        type: Number,
+        min: [0, 'The value of path `{PATH}` ({VALUE}) is beneath the limit ({MIN}).']
+    },
     author: {
         id: {
             type: mongoose.SchemaTypes.ObjectId,
