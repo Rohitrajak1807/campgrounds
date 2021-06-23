@@ -13,15 +13,15 @@ const methodOverride = require('method-override')
 const flash = require('connect-flash')
 
 const path = require('path')
-const bootstrapPath = path.join(__dirname, '../node_modules/bootstrap3/dist')
-const jQueryPath = path.join(__dirname, '../node_modules/jquery/dist')
+const bootstrapPath = path.join(__dirname, '../node_modules/bootstrap/dist')
+const popperPath = path.join(__dirname, '../node_modules/@popperjs/core/dist/umd')
 const publicDir = path.join(__dirname, '../public')
 
 const app = express()
 app.set('view engine', 'ejs')
 app.use('/css/bootstrap', express.static(path.join(bootstrapPath, 'css')))
 app.use('/js/bootstrap', express.static(path.join(bootstrapPath, 'js')))
-app.use('/js/jquery', express.static(jQueryPath))
+app.use('/js/popper', express.static(popperPath))
 app.use('/fonts/bootstrap', express.static(path.join(bootstrapPath, 'fonts')))
 
 app.use(express.static(publicDir))

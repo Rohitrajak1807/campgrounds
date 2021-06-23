@@ -1,19 +1,19 @@
 <%- include("partials/header"); %>
-<div class="row">
-    <h1 style="text-align: center">Sign Up</h1>
-    <div style="width: 30%; margin: 25px auto;">
-        <form action="/register" method="post">
-            <div class="form-group">
-                <input class="form-control" type="text" name="username" placeholder="username">
-            </div>
-            <div class="form-group">
-                <input class="form-control" type="password" name="password" placeholder="password">
-            </div>
-            <div class="form-group">
-                <button class="btn btn-lg btn-primary btn-block">Sign Up</button>
-            </div>
-        </form>
-        <a href="/campgrounds">Go Back</a>
+<main class="row form login-signup-form">
+    <div class="col-md-12">
+        <h1 class="text-center">Sign Up</h1>
     </div>
-</div>
+    <form action="/register" method="post">
+        <div class="form-floating">
+            <input type="text" class="form-control form-top-element" placeholder="Username" name="username" id="user-name">
+            <label for="user-name">Username</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control form-bottom-element" placeholder="Password" name="password" id="password">
+            <label for="password">Password</label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
+    </form>
+    <a href="/campgrounds" class="link-secondary mt-5">Go back</a>
+</main>
 <%- include("partials/footer"); %>

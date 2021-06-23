@@ -37,22 +37,14 @@ router.put('/:commentId', redirectIfNotLoggedIn, assertCampgroundExists, assertC
 })
 
 router.get('/new', redirectIfNotLoggedIn, assertCampgroundExists, async (req, res) => {
-    try {
-        const campground = await Campground.findById(req.params.id)
-        req.flash('success', 'Comment removed')
-        res.render('comments/new', {
-            campground: campground
-        })
-    } catch (e) {
-        console.log(e)
-        req.flash('error', 'Something went wrong')
-        res.redirect(`/campgrounds/${req.params.id}`)
-    }
+    res.render('comments/new', {
+        campground: res.locals.campground
+    })
 })
 
 router.post('/', redirectIfNotLoggedIn, assertCampgroundExists, async (req, res) => {
     try {
-        const campground = await Campground.findById(req.params.id)
+        const campground = res.locals.campground
         const {_id, username} = req.user
         const comment = await Comment.create({
             text: req.body.comment.text,

@@ -72,6 +72,7 @@ exports.assertCampgroundExists = async (req, res, next) => {
             req.flash('error', 'Campground not found')
             return res.redirect('back')
         }
+        res.locals.campground = campground
         next()
     } catch (e) {
         console.log(e)

@@ -1,29 +1,26 @@
 <%- include("../partials/header") %>
-<div class="container">
-    <div class="row">
-        <h1 style="text-align: center">
-            Add a new Campground
-        </h1>
-        <div style="width: 30%; margin: 2% auto">
-            <form action="/campgrounds" method="post">
-                <div class="form-group">
-                    <input class="form-control" type="text" placeholder="Name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Image URL" name="image" required>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control form-group-lg" name="description" placeholder="Description"
-                           required>
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-lg btn-primary btn-block">
-                </div>
-
-            </form>
-            <a href="/campgrounds">Go back</a>
-        </div>
-
+<main class="row justify-content-center form">
+    <div class="col-md-12">
+        <h1 class=" text-center">Add a New Campground</h1>
     </div>
-</div>
+    <div class="col-xs-12 col-md-6 col-lg-4">
+        <form action="/campgrounds" method="post">
+            <div class="form-floating">
+                <input id="name" class="form-control form-top-element" type="text" placeholder="Name" name="name" required>
+                <label for="name">Name</label>
+            </div>
+            <div class="form-floating">
+                <input id="image" type="url" class="form-control form-mid-element" placeholder="Image URL" name="image" required>
+                <label for="image">Image URL</label>
+            </div>
+            <div class="form-floating">
+                <input id="description" type="text" class="form-control form-bottom-element" name="description" placeholder="Description"
+                       required>
+                <label for="description">Description</label>
+            </div>
+            <button class="w-50 btn btn-lg btn-primary mb-5" type="submit">Submit</button>
+        </form>
+        <a href="/campgrounds" class="link-secondary">Go back</a>
+    </div>
+</main>
 <%- include("../partials/footer") %>
