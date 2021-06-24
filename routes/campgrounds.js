@@ -2,20 +2,28 @@ const express = require('express')
 const router = express.Router()
 require('../models/comment')
 const Campground = require('../models/campground')
+const {escapeRegex} = require('../utils/general')
 const {redirectIfNotLoggedIn, assertCampgroundOwner} = require('../utils/middleware')
 
 router.get('/', async (req, res) => {
     try {
-        const campgrounds = await Campground.find({})
+        let filter = {}
+        let noMatch
+        if(req.query.search && req.query.search.length > 0) {
+            filter = {name: new RegExp(escapeRegex(req.query.search), 'gi')}
+        }
+        const campgrounds = await Campground.find(filter)
+        if(campgrounds.length < 1)
+            noMatch = 'Nothing found'
         res.render('campgrounds/index', {
             campgrounds: campgrounds,
-            page: 'campgrounds'
+            page: 'campgrounds',
+            noMatch: noMatch
         })
     } catch (e) {
         console.log(e)
         res.redirect('/')
     }
-
 })
 
 router.post('/', redirectIfNotLoggedIn, async (req, res) => {
