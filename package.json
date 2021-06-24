@@ -8,7 +8,7 @@
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "me",
+  "author": "Rohitrajak1807 <rohit.rajakah11@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
