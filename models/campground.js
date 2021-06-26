@@ -5,9 +5,6 @@ const campgroundSchema = new mongoose.Schema({
     name: String,
     image: String,
     description: String,
-    location: String,
-    lat: Number,
-    lng: Number,
     cost: {
         type: Number,
         min: [0, 'The value of path `{PATH}` ({VALUE}) is beneath the limit ({MIN}).']

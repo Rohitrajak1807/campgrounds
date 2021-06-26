@@ -3,17 +3,17 @@ const router = express.Router()
 require('../models/comment')
 const Campground = require('../models/campground')
 const {escapeRegex} = require('../utils/general')
-const {redirectIfNotLoggedIn, assertCampgroundOwner, getLocation} = require('../utils/middleware')
+const {redirectIfNotLoggedIn, assertCampgroundOwner} = require('../utils/middleware')
 
 router.get('/', async (req, res) => {
     try {
         let filter = {}
         let noMatch
-        if (req.query.search && req.query.search.length > 0) {
+        if(req.query.search && req.query.search.length > 0) {
             filter = {name: new RegExp(escapeRegex(req.query.search), 'gi')}
         }
         const campgrounds = await Campground.find(filter)
-        if (campgrounds.length < 1)
+        if(campgrounds.length < 1)
             noMatch = 'Nothing found'
         res.render('campgrounds/index', {
             campgrounds: campgrounds,
@@ -26,11 +26,10 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.post('/', redirectIfNotLoggedIn, getLocation, async (req, res) => {
+router.post('/', redirectIfNotLoggedIn, async (req, res) => {
     try {
         const {name, image, description, cost} = req.body
         const {username, _id} = req.user
-        const {lat, lng, location} = res.locals
         const newCampground = await Campground.create({
             name: name,
             image: image,
@@ -39,10 +38,7 @@ router.post('/', redirectIfNotLoggedIn, getLocation, async (req, res) => {
             author: {
                 id: _id,
                 username: username
-            },
-            location: location,
-            lat: lat,
-            lng: lng
+            }
         })
         console.log(newCampground._id)
         req.flash('success', 'Campground added')
@@ -61,7 +57,7 @@ router.get('/new', redirectIfNotLoggedIn, (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const campground = await Campground.findById(req.params.id).populate('comments')
-        if (!campground) {
+        if(!campground) {
             req.flash('error', 'Capground doesn\'t exist')
             res.redirect('back')
         }
@@ -75,20 +71,15 @@ router.get('/:id', async (req, res) => {
 })
 
 router.get('/:id/edit', redirectIfNotLoggedIn, assertCampgroundOwner, async (req, res) => {
-    res.render('campgrounds/edit', {
-        campground: res.locals.campground
-    })
+        res.render('campgrounds/edit', {
+            campground: res.locals.campground
+        })
 })
 
-router.put('/:id', redirectIfNotLoggedIn, assertCampgroundOwner, getLocation, async (req, res) => {
+router.put('/:id', redirectIfNotLoggedIn, assertCampgroundOwner,async (req, res) => {
     try {
-        let update = req.body.campground
-        const {lat, lng, location} = res.locals
-        update.lat = lat
-        update.lng = lng
-        update.location = location
-        const updatedCampground = await res.locals.campground.updateOne(update)
-        console.log(updatedCampground)
+        const campground = await res.locals.campground.updateOne(req.body.campground)
+        console.log(campground)
         req.flash('success', 'Campground Updated')
         res.redirect(`/campgrounds/${req.params.id}`)
     } catch (e) {
@@ -98,7 +89,7 @@ router.put('/:id', redirectIfNotLoggedIn, assertCampgroundOwner, getLocation, as
     }
 })
 
-router.delete('/:id', redirectIfNotLoggedIn, assertCampgroundOwner, async (req, res) => {
+router.delete('/:id', redirectIfNotLoggedIn, assertCampgroundOwner,async (req, res) => {
     try {
         await res.locals.campground.deleteOne()
         req.flash('success', 'Campground deleted')
