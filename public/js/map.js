@@ -1,5 +1,5 @@
 const script = document.createElement('script')
-script.src = src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-hgl5n_jj4RVBqxeH4iaxm45kubjBFWw&callback=initMap"
+script.src = src="https://maps.googleapis.com/maps/api/js?key=PUTYOURKEYHERE=initMap"
 script.async = true
 
 function initMap(campground) {
